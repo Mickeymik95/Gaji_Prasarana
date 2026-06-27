@@ -205,14 +205,14 @@
             font-weight: bold;
         }
 
-        /* --- Butang WhatsApp --- */
-        .btn-whatsapp {
+        /* --- Butang Salin Data --- */
+        .btn-copy {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            background-color: #25d366;
-            color: #fff;
+            background-color: var(--primary);
+            color: #0f172a;
             border: none;
             padding: 15px;
             font-size: 1.1rem;
@@ -221,15 +221,15 @@
             cursor: pointer;
             margin-top: 25px;
             transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
-        .btn-whatsapp:hover {
-            background-color: #20ba5a;
+        .btn-copy:hover {
+            background-color: #7dd3fc;
             transform: translateY(-2px);
         }
 
-        .btn-whatsapp:active {
+        .btn-copy:active {
             transform: translateY(0);
         }
 
@@ -254,6 +254,7 @@
 </head>
 <body>
 
+    <!-- Navbar -->
     <nav class="navbar">
         <h1>Kiraan Gaji PB Prasarana</h1>
         <a href="https://wa.me/60149236577" target="_blank" class="navbar-admin-link">
@@ -268,6 +269,7 @@
     <div class="container">
         <div class="grid-layout">
             
+            <!-- BAHAGIAN 1: USER KEYIN -->
             <div class="card">
                 <h2>Bahagian 1: Kemasukan Data</h2>
                 
@@ -309,16 +311,9 @@
                 </div>
             </div>
 
+            <!-- BAHAGIAN 2: JADUAL KIRAAN -->
             <div class="card">
                 <h2>Bahagian 2: Hasil Kiraan</h2>
-                
-                <div class="highlight-box">
-                    <div class="flex-total">
-                        <span>Basic Utama:</span>
-                        <span id="calc-basic-utama">RM 0.00</span>
-                    </div>
-                </div>
-                <br>
 
                 <div class="result-row">
                     <span>OT Normal 1.5:</span>
@@ -338,6 +333,7 @@
                 </div>
             </div>
 
+            <!-- BAHAGIAN 3: TOTAL & POTONGAN -->
             <div class="card">
                 <h2>Bahagian 3: Rumusan Gaji</h2>
                 
@@ -348,7 +344,7 @@
                     </div>
                 </div>
 
-                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan Wajib (Anggaran Statutori)</h3>
+                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan Wajib (Kurang tepat, nanti update😂)</h3>
                 <div class="result-row">
                     <span>KWSP / EPF (11%):</span>
                     <span class="result-val" id="potongan-kwsp" style="color: var(--danger);">-RM 0.00</span>
@@ -371,32 +367,27 @@
 
                 <div class="highlight-box" style="background-color: rgba(16, 185, 129, 0.2); border-left-color: var(--success); margin-top: 20px;">
                     <div class="flex-total" style="font-size: 1.4rem; color: #fff;">
-                        <span>GAJI BERSIH (Nett):</span>
+                        <span>GAJI BERSIH (ini pun tak tepat😂):</span>
                         <span id="summary-gaji-bersih" style="color: var(--success);">RM 0.00</span>
                     </div>
                 </div>
 
-                <button class="btn-whatsapp" onclick="hantarKeWhatsApp()">
-                    🟢 Auto Copy & Buka WhatsApp (Pilih Penerima)
+                <!-- Butang Hanya Salin Data (Tanpa Auto-Buka WhatsApp) -->
+                <button class="btn-copy" onclick="salinDataGaji()">
+                    📋 Salin Data Laporan Gaji
                 </button>
             </div>
 
         </div>
     </div>
 
+    <!-- --- JAVASCRIPT --- -->
     <script>
-        // Senarai ID input yang wujud di skrin
         const inputIds = [
-            'input-basic', 
-            'input-ot15', 
-            'input-normal-ph', 
-            'input-ot-ph', 
-            'input-syif-pagi', 
-            'input-syif-malam', 
-            'input-dobi'
+            'input-basic', 'input-ot15', 'input-normal-ph', 
+            'input-ot-ph', 'input-syif-pagi', 'input-syif-malam', 'input-dobi'
         ];
 
-        // Pasang fungsi auto-kira pada setiap input
         inputIds.forEach(id => {
             const el = document.getElementById(id);
             if (el) {
@@ -404,7 +395,6 @@
             }
         });
 
-        // Fungsi pembantu untuk mengambil nilai nombor
         function dapatkanNilai(id) {
             const elemen = document.getElementById(id);
             if (!elemen) return 0;
@@ -412,12 +402,16 @@
             return isNaN(nilai) ? 0 : nilai;
         }
 
-        // Fungsi format nilai mata wang RM
         function formatMataWang(nilai) {
             return "RM " + nilai.toFixed(2);
         }
 
-        // Fungsi utama pengiraan gaji otomatis
+        // Variabel global untuk memegang nilai terhitung yang akan disalin
+        let nilaiGlobal = {
+            basicUtama: 0,
+            elaunShift: 0
+        };
+
         function kiraGaji() {
             const basic = dapatkanNilai('input-basic');
             const ot15_jam = dapatkanNilai('input-ot15');
@@ -427,16 +421,18 @@
             const syifMalam = dapatkanNilai('input-syif-malam');
             const dobi = dapatkanNilai('input-dobi');
 
-            // Bahagian 1: Pengiraan Elaun Shift & Basic Utama
+            // Pengiraan Latar Belakang (Formula Tetap Sama)
             const elaunShift = (syifPagi * 15) + (syifMalam * 20);
             const basicUtama = basic + elaunShift;
 
-            // Bahagian 2: Formula Mengikut Syarat Anda
+            // Simpan ke variabel global untuk keperluan teks salinan
+            nilaiGlobal.basicUtama = basicUtama;
+            nilaiGlobal.elaunShift = elaunShift;
+
             const hasilOt15 = (basicUtama / 26 / 8 * 1.5) * ot15_jam;
             const hasilNormalPh = (basicUtama / 26 * 2) * normalPh_hari;
             const hasilOtPh = (basicUtama / 26 / 8 * 3) * otPh_jam;
 
-            // Bahagian 3: Rumusan Gaji Kasar & Potongan Statutori
             const gajiKasar = basicUtama + hasilOt15 + hasilNormalPh + hasilOtPh + dobi;
 
             let potonganKWSP = 0;
@@ -456,8 +452,7 @@
             const jumlahPotongan = potonganKWSP + potonganSocso + potonganEis;
             const gajiBersih = gajiKasar - jumlahPotongan;
 
-            // Kemaskini data ke interface skrin (UI) secara live
-            document.getElementById('calc-basic-utama').innerText = formatMataWang(basicUtama);
+            // Kemaskini UI (Paparan "Basic Utama" telah dibuang daripada senarai ini)
             document.getElementById('calc-ot15').innerText = formatMataWang(hasilOt15);
             document.getElementById('calc-normal-ph').innerText = formatMataWang(hasilNormalPh);
             document.getElementById('calc-ot-ph').innerText = formatMataWang(hasilOtPh);
@@ -471,8 +466,8 @@
             document.getElementById('summary-gaji-bersih').innerText = formatMataWang(gajiBersih);
         }
 
-        // Fungsi butang bawah: Salin teks dan buka WhatsApp kosong
-        function hantarKeWhatsApp() {
+        // Fungsi Hanya Menyalin Data ke Clipboard (Tanpa Buka WhatsApp)
+        function salinDataGaji() {
             const teksMesej = `*KIRAAN GAJI PB PRASARANA*\n` +
                 `==============================\n` +
                 `*BAHAGIAN 1: INPUT DATA*\n` +
@@ -482,7 +477,7 @@
                 `• Syif: Pagi (${dapatkanNilai('input-syif-pagi')} Hari) | Malam (${dapatkanNilai('input-syif-malam')} Hari)\n` +
                 `• Elaun Dobi: RM ${dapatkanNilai('input-dobi').toFixed(2)}\n\n` +
                 `*BAHAGIAN 2: HASIL KIRAAN*\n` +
-                `• Basic Utama: ${document.getElementById('calc-basic-utama').innerText}\n` +
+                `• Basic Utama: RM ${nilaiGlobal.basicUtama.toFixed(2)}\n` +
                 `• Hasil OT 1.5: ${document.getElementById('calc-ot15').innerText}\n` +
                 `• Hasil Normal PH: ${document.getElementById('calc-normal-ph').innerText}\n` +
                 `• Hasil OT PH: ${document.getElementById('calc-ot-ph').innerText}\n` +
@@ -493,16 +488,10 @@
                 `• 💵 *GAJI BERSIH:* ${document.getElementById('summary-gaji-bersih').innerText}\n` +
                 `==============================`;
 
-            // Proses salin teks automatik
             navigator.clipboard.writeText(teksMesej).then(() => {
-                alert("Data gaji berjaya disalin! Sila pilih penerima di WhatsApp sebentar lagi dan guna fungsi 'Paste'.");
-                // Buka WhatsApp sahaja (Tanpa target nombor sesiapa)
-                const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(teksMesej)}`;
-                window.open(urlWhatsapp, '_blank');
+                alert("📋 Laporan gaji berjaya disalin ke peranti anda! Anda kini boleh 'Paste' (Tampal) di mana-mana aplikasi.");
             }).catch(err => {
-                // Kecemasan jika browser block clipboards
-                const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(teksMesej)}`;
-                window.open(urlWhatsapp, '_blank');
+                alert("Gagal menyalin secara automatik. Sila cuba lagi.");
             });
         }
     </script>
