@@ -472,8 +472,43 @@
             document.getElementById('summary-gaji-bersih').innerText = formatRM(gajiBersih);
         }
 
-        // Fungsi Auto Copy & Hantar ke WhatsApp Admin Baru (0149236577)
+// Fungsi Auto Copy & Hanya Buka WhatsApp Sahaja (Tanpa Direct Send ke Nombor Sila)
         function hantarKeWhatsApp() {
+            // Ambil semua data teks hasil paparan terkini
+            const teksMesej = `*KIRAAN GAJI PB PRASARANA*\n` +
+                `==============================\n` +
+                `*BAHAGIAN 1: INPUT DATA*\n` +
+                `• Basic Asal: RM ${getVal('input-basic').toFixed(2)}\n` +
+                `• OT 1.5: ${getVal('input-ot15')} Jam\n` +
+                `• Normal PH: ${getVal('input-normal-ph')} Hari | OT PH 3.0: ${getVal('input-ot-ph')} Jam\n` +
+                `• Syif: Pagi (${getVal('input-syif-pagi')} Hari) | Malam (${getVal('input-syif-malam')} Hari)\n` +
+                `• Elaun Dobi: RM ${getVal('input-dobi').toFixed(2)}\n\n` +
+                `*BAHAGIAN 2: HASIL KIRAAN*\n` +
+                `• Basic Utama: ${document.getElementById('calc-basic-utama').innerText}\n` +
+                `• Hasil OT 1.5: ${document.getElementById('calc-ot15').innerText}\n` +
+                `• Hasil Normal PH: ${document.getElementById('calc-normal-ph').innerText}\n` +
+                `• Hasil OT PH: ${document.getElementById('calc-ot-ph').innerText}\n` +
+                `• Jumlah Elaun Syif: ${document.getElementById('calc-elaun-shift').innerText}\n\n` +
+                `*BAHAGIAN 3: RUMUSAN*\n` +
+                `• 💰 *GAJI KASAR:* ${document.getElementById('summary-gaji-kasar').innerText}\n` +
+                `• ❌ Jumlah Potongan: ${document.getElementById('summary-potongan').innerText}\n` +
+                `• 💵 *GAJI BERSIH:* ${document.getElementById('summary-gaji-bersih').innerText}\n` +
+                `==============================`;
+
+            // 1. Proses Auto-Copy ke Clipboard peranti
+            navigator.clipboard.writeText(teksMesej).then(() => {
+                alert("Data gaji telah disalin! Sila 'Paste' di dalam WhatsApp nanti.");
+                
+                // 2. Buka aplikasi WhatsApp sahaja (Deep Link tanpa nombor telefon)
+                // Menggunakan teks sebagai parameter kosong atau terus buka main interface
+                const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(teksMesej)}`;
+                window.open(urlWhatsapp, '_blank');
+            }).catch(err => {
+                // Jika browser block fungsi auto-copy, ia tetap akan buka WhatsApp dengan teks tersebut
+                const urlWhatsapp = `https://wa.me/?text=${encodeURIComponent(teksMesej)}`;
+                window.open(urlWhatsapp, '_blank');
+            });
+        }
             const teksMesej = `*KIRAAN GAJI PB PRASARANA*\n` +
                 `==============================\n` +
                 `*BAHAGIAN 1: INPUT DATA*\n` +
