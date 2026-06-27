@@ -1,214 +1,510 @@
 <!DOCTYPE html>
-<html>
+<html lang="ms">
 <head>
-  <title>Kalendar & Gaji Interaktif Mobile</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: Arial, sans-serif; font-size: 14px; margin: 5px; background: #f5f5f5; }
-    h3 { text-align: center; color: #333; margin-bottom: 10px; font-size:16px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 15px; text-align: center; }
-    th { border: 1px solid #ccc; padding: 6px; font-size: 12px; height: 30px; background: #e0e0e0; border-radius: 4px; }
-    td { 
-      border: 1px solid #ccc; 
-      width: 14%; 
-      min-width: 40px;
-      min-height: 70px;
-      position: relative;
-      background-color: #f0f0f0; 
-      transition: all 0.2s ease;
-      border-radius: 6px;
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: 14px;
-      cursor: pointer;
-      padding: 2px;
-    }
-    td:hover { transform: translateY(-2px); box-shadow: 3px 6px 10px rgba(0,0,0,0.2); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiraan Gaji PB Prasarana</title>
+    <style>
+        /* --- Tema Utama & Reset --- */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --success: #10b981;
+            --danger: #ef4444;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
 
-    .date { font-weight: bold; font-size: 12px; margin-bottom: 2px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    .menu { 
-      display: none; 
-      position: absolute; 
-      background: #fff; 
-      border: 1px solid #aaa; 
-      z-index: 100; 
-      font-size: 14px;
-      padding: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      border-radius: 6px;
-      min-width: 120px;
-    }
-    .menu div { padding: 8px; cursor: pointer; border-radius: 4px; transition: background 0.2s; font-size:14px; }
-    .menu div:hover { background: #f0f0f0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            padding-bottom: 50px;
+        }
 
-    /* Warna pilihan */
-    .PAGI { background-color: #fff176; }      
-    .MALAM { background-color: #424242; color: white; }  
-    .OD { background-color: #ffffff; }        
-    .KERJA_OD { background-color: #4caf50; color:white; } 
-    .RD { background-color: #2196f3; color:white; }     
-    .PH { background-color: #9c27b0; color:white; }     
-    .OT_EXTRA { background-color: #ff9800; color:white; font-weight:bold; font-size:14px; }
+        /* --- Navbar Glowing & Beralun --- */
+        .navbar {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--primary-glow);
+            border-bottom: 2px solid var(--primary);
+        }
 
-    .output { margin-top: 10px; font-size: 14px; background: #fff; padding: 10px; border-radius: 6px; box-shadow: 1px 2px 4px rgba(0,0,0,0.15); }
-    .output span { font-weight: bold; color: #1565c0; }
-    input { width: 80px; padding: 4px; margin-right: 5px; font-size:14px; text-align:center; }
-    .ot-input { width: 50px; font-size:14px; padding: 2px; margin-top:2px; text-align:center; }
+        .navbar h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            z-index: 2;
+            position: relative;
+        }
 
-    @media screen and (max-width: 480px){
-      td { min-height: 90px; font-size:16px; }
-      .menu div { font-size:16px; padding:10px; }
-      input { width: 100px; font-size:16px; padding:4px; }
-      .ot-input { width: 60px; font-size:16px; padding:3px; }
-    }
-  </style>
+        /* Link Admin WhatsApp Klik Auto Chat */
+        .navbar-admin-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 1rem;
+            color: #25d366;
+            margin-top: 8px;
+            z-index: 2;
+            position: relative;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, text-shadow 0.2s;
+        }
+
+        .navbar-admin-link:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(37, 211, 102, 0.6);
+        }
+
+        .navbar-admin-link svg {
+            width: 18px;
+            height: 18px;
+            fill: #25d366;
+        }
+
+        /* Kesan Beralun (Wave Animation) */
+        .navbar::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 60%);
+            animation: wave 8s infinite linear;
+            z-index: 1;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Kontainer Utama --- */
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        /* --- Seragamkan Saiz Input --- */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        /* --- Paparan Jadual & Keputusan --- */
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 1rem;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-val {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .highlight-box {
+            background-color: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box.danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger);
+        }
+
+        .highlight-box.success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left-color: var(--success);
+        }
+
+        .flex-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* --- Butang WhatsApp --- */
+        .btn-whatsapp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background-color: #25d366;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #20ba5a;
+            transform: translateY(-2px);
+        }
+
+        .btn-whatsapp:active {
+            transform: translateY(0);
+        }
+
+        /* --- Reka Bentuk Responsif (Telefon) --- */
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .container {
+                padding: 0 10px;
+                margin: 15px auto;
+            }
+            .card {
+                padding: 15px;
+            }
+            .navbar h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h3>Kalendar Kerja & Gaji Automatik</h3>
-<div>
-  Basic: <input type="number" id="basic" value="2000"> 
-  Elaun Dobi: <input type="number" id="elaunDobi" value="100">
-</div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h1>Kiraan Gaji PB Prasarana</h1>
+        <!-- Link Klik Auto Chat ke Admin dengan SVG Logo WhatsApp -->
+        <a href="https://wa.me/60149236577" target="_blank" class="navbar-admin-link">
+            <span>by</span>
+            <svg viewBox="0 0 448 512">
+                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+            </svg>
+            <span>Nazmi (klik untuk sembang😂)</span>
+        </a>
+    </nav>
 
-<div id="calendar"></div>
+    <div class="container">
+        <div class="grid-layout">
+            
+            <!-- BAHAGIAN 1: USER KEYIN -->
+            <div class="card">
+                <h2>Bahagian 1: Kemasukan Data</h2>
+                
+                <div class="form-group">
+                    <label>Gaji Asas (Basic)</label>
+                    <input type="number" id="input-basic" placeholder="Masukkan basic RM" min="0" step="any">
+                </div>
 
-<div class="output">
-  <p>Jumlah Elaun Syif: <span id="elaunSyif">0</span></p>
-  <p>Jumlah OT Normal: <span id="otNormal">0</span></p>
-  <p>Jumlah PH: <span id="phTotal">0</span></p>
-  <p>Jumlah Kerja OD: <span id="kerjaOD">0</span></p>
-  <p>Jumlah OT Extra: <span id="otExtra">0</span></p>
-  <p><b>Gaji Kasar: <span id="gajiKasar">0</span></b></p>
-</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>OT Normal 1.5</label>
+                        <input type="number" id="input-ot15" placeholder="Jam" min="0" step="any">
+                    </div>
+                    <div class="form-group">
+                        <label>Normal PH</label>
+                        <input type="number" id="input-normal-ph" placeholder="Hari" min="0" step="any">
+                    </div>
+                </div>
 
-<script>
-const calendarDiv = document.getElementById("calendar");
-const daysInMonth = 30;
-const startDay = 1;
-const choices = ["PAGI","MALAM","OD","KERJA_OD","RD","PH","OT_EXTRA"];
-const dayNames = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"];
+                <div class="form-group">
+                    <label>OT PH 3.0</label>
+                    <input type="number" id="input-ot-ph" placeholder="Jam" min="0" step="any">
+                </div>
 
-let table = document.createElement("table");
-let headerRow = document.createElement("tr");
-dayNames.forEach(day=>{
-  let th = document.createElement("th");
-  th.textContent = day;
-  headerRow.appendChild(th);
-});
-table.appendChild(headerRow);
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Syif Pagi (RM15/hari)</label>
+                        <input type="number" id="input-syif-pagi" placeholder="Hari" min="0" step="any">
+                    </div>
+                    <div class="form-group">
+                        <label>Syif Malam (RM20/hari)</label>
+                        <input type="number" id="input-syif-malam" placeholder="Hari" min="0" step="any">
+                    </div>
+                </div>
 
-let row = document.createElement("tr");
-for(let i=0;i<startDay;i++) row.appendChild(document.createElement("td"));
+                <div class="form-group">
+                    <label>Elaun Dobi</label>
+                    <input type="number" id="input-dobi" placeholder="RM" min="0" step="any">
+                </div>
+            </div>
 
-for(let d=1; d<=daysInMonth; d++){
-  let cell = document.createElement("td");
-  let span = document.createElement("span");
-  span.className="date";
-  span.innerHTML = d;
-  cell.appendChild(span);
+            <!-- BAHAGIAN 2: JADUAL KIRAAN -->
+            <div class="card">
+                <h2>Bahagian 2: Hasil Kiraan</h2>
+                
+                <div class="highlight-box">
+                    <div class="flex-total">
+                        <span>Basic Rate:</span>
+                        <span id="calc-basic-utama">RM 0.00</span>
+                    </div>
+                </div>
+                <br>
 
-  // menu
-  let menu = document.createElement("div");
-  menu.className="menu";
-  choices.forEach(c=>{
-    let item=document.createElement("div");
-    item.textContent=c.replace("_"," ");
-    item.addEventListener("click", ()=>{
-      cell.setAttribute("data-choice",c);
-      choices.forEach(ch=>cell.classList.remove(ch));
-      cell.classList.add(c);
-      span.innerHTML=d+"<br>"+c.replace("_"," ");
+                <div class="result-row">
+                    <span>OT Normal 1.5:</span>
+                    <span class="result-val" id="calc-ot15">RM 0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Normal PH:</span>
+                    <span class="result-val" id="calc-normal-ph">RM 0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>OT PH 3.0:</span>
+                    <span class="result-val" id="calc-ot-ph">RM 0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Elaun Shift:</span>
+                    <span class="result-val" id="calc-elaun-shift">RM 0.00</span>
+                </div>
+            </div>
 
-      // OT EXTRA input inline
-      if(c==="OT_EXTRA"){
-        if(!cell.querySelector(".ot-input")){
-          let input = document.createElement("input");
-          input.type="number"; input.min="0"; input.value=0;
-          input.className="ot-input";
-          input.addEventListener("input", ()=>kiraGaji());
-          cell.appendChild(input);
+            <!-- BAHAGIAN 3: TOTAL & POTONGAN -->
+            <div class="card">
+                <h2>Bahagian 3: Rumusan Gaji</h2>
+                
+                <div class="highlight-box success">
+                    <div class="flex-total">
+                        <span>Gaji Kasar:</span>
+                        <span id="summary-gaji-kasar">RM 0.00</span>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan Wajib (Ini tidak tepat, nanti update😂)</h3>
+                <div class="result-row">
+                    <span>KWSP / EPF (11%):</span>
+                    <span class="result-val" id="potongan-kwsp" style="color: var(--danger);">-RM 0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>PERKESO / SOCSO:</span>
+                    <span class="result-val" id="potongan-socso" style="color: var(--danger);">-RM 0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>SIP / EIS (0.2%):</span>
+                    <span class="result-val" id="potongan-eis" style="color: var(--danger);">-RM 0.00</span>
+                </div>
+
+                <div class="highlight-box danger">
+                    <div class="flex-total">
+                        <span>Jumlah Potongan:</span>
+                        <span id="summary-potongan">RM 0.00</span>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background-color: rgba(16, 185, 129, 0.2); border-left-color: var(--success); margin-top: 20px;">
+                    <div class="flex-total" style="font-size: 1.4rem; color: #fff;">
+                        <span>GAJI BERSIH (ini pun kurang tepat yaa😂):</span>
+                        <span id="summary-gaji-bersih" style="color: var(--success);">RM 0.00</span>
+                    </div>
+                </div>
+
+                <!-- Butang Hantar WhatsApp -->
+                <button class="btn-whatsapp" onclick="hantarKeWhatsApp()">
+                    🟢 Auto Copy & Hantar Data ke WhatsApp
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- --- JAVASCRIPT LOGIK KIRAAN AUTOMATIK --- -->
+    <script>
+        // Mengambil id elemen input yang aktif (setelah membuang OD dan OT Sambung)
+        const inputs = [
+            'input-basic', 'input-ot15', 'input-normal-ph', 
+            'input-ot-ph', 'input-syif-pagi', 'input-syif-malam', 'input-dobi'
+        ];
+
+        // Letakkan event listener 'input' pada setiap kotak input untuk auto-calculate
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', kiraGaji);
+        });
+
+        function getVal(id) {
+            const v = parseFloat(document.getElementById(id).value);
+            return isNaN(v) ? 0 : v;
         }
-      } else {
-        let old = cell.querySelector(".ot-input");
-        if(old) old.remove();
-      }
 
-      menu.style.display="none";
-      kiraGaji();
-    });
-    menu.addEventListener("click", e=>e.stopPropagation());
-    menu.appendChild(item);
-  });
-  cell.appendChild(menu);
+        function formatRM(nilai) {
+            return "RM " + nilai.toFixed(2);
+        }
 
-  span.addEventListener("click", ()=>{
-    document.querySelectorAll(".menu").forEach(m=>m.style.display="none");
-    menu.style.display="block";
-    menu.style.left="0px";
-    menu.style.top="25px";
-  });
+        function kiraGaji() {
+            // Ambil Nilai Input terkini
+            const basic = getVal('input-basic');
+            const ot15_jam = getVal('input-ot15');
+            const normalPh_hari = getVal('input-normal-ph');
+            const otPh_jam = getVal('input-ot-ph');
+            const syifPagi = getVal('input-syif-pagi');
+            const syifMalam = getVal('input-syif-malam');
+            const dobi = getVal('input-dobi');
 
-  row.appendChild(cell);
-  if((d+startDay)%7===0||d===daysInMonth){
-    table.appendChild(row);
-    row=document.createElement("tr");
-  }
-}
-calendarDiv.appendChild(table);
+            // Pengiraan Basic Utama
+            const elaunShift = (syifPagi * 15) + (syifMalam * 20);
+            const basicUtama = basic + elaunShift;
 
-// ===================== Kiraan Gaji =====================
-function kiraGaji(){
-  let basic=parseFloat(document.getElementById("basic").value)||0;
-  let elaunDobi=parseFloat(document.getElementById("elaunDobi").value)||0;
-  let elaunSyif=0, otNormal=0, phTotal=0, kerjaOD=0, otExtra=0;
+            // Pengiraan Hasil OT 1.5 (Hanya berdasarkan input-ot15)
+            const kadarJam15 = (basicUtama / 26 / 8) * 1.5;
+            const hasilOt15 = kadarJam15 * ot15_jam;
 
-  document.querySelectorAll("td").forEach(cell=>{
-    let choice = cell.getAttribute("data-choice");
-    if(!choice) return;
+            // Pengiraan Hasil Normal PH
+            const hasilNormalPh = (basicUtama / 26 * 2) * normalPh_hari;
 
-    if(choice==="PAGI"){ elaunSyif+=15; otNormal+=(basic+elaunDobi+elaunSyif)/26/8*1.5*3.5; }
-    if(choice==="MALAM"){ elaunSyif+=20; otNormal+=(basic+elaunDobi+elaunSyif)/26/8*1.5*3.5; }
-    if(choice==="PH"){ 
-      let total=elaunSyif;
-      phTotal+=(basic+elaunDobi+total)/26/8*3*3.5 + (basic+elaunDobi+total)/26*2;
-    }
-    if(choice==="KERJA_OD"){ let total=elaunSyif; kerjaOD+=(basic+elaunDobi+total)/26/8*1.5*11.5; }
+            // Pengiraan Hasil OT PH 3.0
+            const hasilOtPh = (basicUtama / 26 / 8 * 3) * otPh_jam;
 
-    if(choice==="OT_EXTRA"){
-      let input=cell.querySelector(".ot-input");
-      let jam=parseFloat(input?.value)||0;
-      let total=elaunSyif;
-      otExtra+=(basic+elaunDobi+total)/26/8*1.5*jam;
-    }
-  });
+            // Jumlah Gaji Kasar
+            const gajiKasar = basicUtama + hasilOt15 + hasilNormalPh + hasilOtPh + dobi;
 
-  let gajiKasar=basic+elaunDobi+elaunSyif+otNormal+phTotal+kerjaOD+otExtra;
-  document.getElementById("elaunSyif").textContent=elaunSyif.toFixed(2);
-  document.getElementById("otNormal").textContent=otNormal.toFixed(2);
-  document.getElementById("phTotal").textContent=phTotal.toFixed(2);
-  document.getElementById("kerjaOD").textContent=kerjaOD.toFixed(2);
-  document.getElementById("otExtra").textContent=otExtra.toFixed(2);
+            // Kira Potongan Statutori Malaysia
+            let potonganKWSP = 0;
+            let potonganSocso = 0;
+            let potonganEis = 0;
 
-document.getElementById("gajiKasar").textContent=gajiKasar.toFixed(2);
-}
+            if (gajiKasar > 0) {
+                potonganKWSP = gajiKasar * 0.11;
+                potonganEis = gajiKasar * 0.002;
+                if(potonganEis > 9.80) potonganEis = 9.80;
 
-// Event listener untuk input basic dan elaun dobi
-document.getElementById("basic").addEventListener("input", kiraGaji);
-document.getElementById("elaunDobi").addEventListener("input", kiraGaji);
+                if (gajiKasar <= 30) potonganSocso = 0.10;
+                else if (gajiKasar <= 4000) potonganSocso = gajiKasar * 0.005;
+                else potonganSocso = 19.75;
+            }
 
-// Tutup menu bila klik di luar
-document.addEventListener("click", ()=> {
-  document.querySelectorAll(".menu").forEach(m=>m.style.display="none");
-});
+            const jumlahPotongan = potonganKWSP + potonganSocso + potonganEis;
+            const gajiBersih = gajiKasar - jumlahPotongan;
 
-// Kiraan awal supaya paparan tidak kosong
-kiraGaji();
-</script>
+            // Papar pada UI
+            document.getElementById('calc-basic-utama').innerText = formatRM(basicUtama);
+            document.getElementById('calc-ot15').innerText = formatRM(hasilOt15);
+            document.getElementById('calc-normal-ph').innerText = formatRM(hasilNormalPh);
+            document.getElementById('calc-ot-ph').innerText = formatRM(hasilOtPh);
+            document.getElementById('calc-elaun-shift').innerText = formatRM(elaunShift);
+            
+            document.getElementById('summary-gaji-kasar').innerText = formatRM(gajiKasar);
+            document.getElementById('potongan-kwsp').innerText = "- " + formatRM(potonganKWSP);
+            document.getElementById('potongan-socso').innerText = "- " + formatRM(potonganSocso);
+            document.getElementById('potongan-eis').innerText = "- " + formatRM(potonganEis);
+            document.getElementById('summary-potongan').innerText = formatRM(jumlahPotongan);
+            document.getElementById('summary-gaji-bersih').innerText = formatRM(gajiBersih);
+        }
 
+        // Fungsi Auto Copy & Hantar ke WhatsApp Admin Baru (0149236577)
+        function hantarKeWhatsApp() {
+            const teksMesej = `*KIRAAN GAJI PB PRASARANA*\n` +
+                `==============================\n` +
+                `*BAHAGIAN 1: INPUT DATA*\n` +
+                `• Basic Asal: RM ${getVal('input-basic').toFixed(2)}\n` +
+                `• OT 1.5: ${getVal('input-ot15')} Jam\n` +
+                `• Normal PH: ${getVal('input-normal-ph')} Hari | OT PH 3.0: ${getVal('input-ot-ph')} Jam\n` +
+                `• Syif: Pagi (${getVal('input-syif-pagi')} Hari) | Malam (${getVal('input-syif-malam')} Hari)\n` +
+                `• Elaun Dobi: RM ${getVal('input-dobi').toFixed(2)}\n\n` +
+                `*BAHAGIAN 2: HASIL KIRAAN*\n` +
+                `• Basic Utama: ${document.getElementById('calc-basic-utama').innerText}\n` +
+                `• Hasil OT 1.5: ${document.getElementById('calc-ot15').innerText}\n` +
+                `• Hasil Normal PH: ${document.getElementById('calc-normal-ph').innerText}\n` +
+                `• Hasil OT PH: ${document.getElementById('calc-ot-ph').innerText}\n` +
+                `• Jumlah Elaun Syif: ${document.getElementById('calc-elaun-shift').innerText}\n\n` +
+                `*BAHAGIAN 3: RUMUSAN*\n` +
+                `• 💰 *GAJI KASAR:* ${document.getElementById('summary-gaji-kasar').innerText}\n` +
+                `• ❌ Jumlah Potongan: ${document.getElementById('summary-potongan').innerText}\n` +
+                `• 💵 *GAJI BERSIH:* ${document.getElementById('summary-gaji-bersih').innerText}\n` +
+                `==============================`;
+
+            const noAdmin = "60149236577"; // Dikemas kini ke nombor admin baharu
+            
+            navigator.clipboard.writeText(teksMesej).then(() => {
+                alert("Data gaji telah disalin (auto-copy) ke peranti anda!");
+                const urlWhatsapp = `https://wa.me/${noAdmin}?text=${encodeURIComponent(teksMesej)}`;
+                window.open(urlWhatsapp, '_blank');
+            }).catch(err => {
+                const urlWhatsapp = `https://wa.me/${noAdmin}?text=${encodeURIComponent(teksMesej)}`;
+                window.open(urlWhatsapp, '_blank');
+            });
+        }
+    </script>
 </body>
 </html>
