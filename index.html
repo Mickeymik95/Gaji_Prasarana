@@ -344,7 +344,7 @@
                     </div>
                 </div>
 
-                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan Wajib (Kurang tepat, nanti update😂)</h3>
+                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan Wajib</h3>
                 <div class="result-row">
                     <span>KWSP / EPF (11%):</span>
                     <span class="result-val" id="potongan-kwsp" style="color: var(--danger);">-RM 0.00</span>
@@ -367,7 +367,7 @@
 
                 <div class="highlight-box" style="background-color: rgba(16, 185, 129, 0.2); border-left-color: var(--success); margin-top: 20px;">
                     <div class="flex-total" style="font-size: 1.4rem; color: #fff;">
-                        <span>GAJI BERSIH (ini pun tak tepat😂):</span>
+                        <span>GAJI BERSIH :</span>
                         <span id="summary-gaji-bersih" style="color: var(--success);">RM 0.00</span>
                     </div>
                 </div>
@@ -412,6 +412,57 @@
             elaunShift: 0
         };
 
+        // =========================
+// MUATKAN JADUAL KWSP & SOCSO
+// =========================
+
+let kwspTable = [];
+let socsoTable = [];
+
+async function loadTables() {
+    try {
+        kwspTable = await fetch("kwsp_table.json").then(r => r.json());
+        socsoTable = await fetch("socso_table.json").then(r => r.json());
+
+        console.log("KWSP:", kwspTable.length);
+        console.log("SOCSO:", socsoTable.length);
+
+        kiraGaji();
+    } catch (e) {
+        console.error(e);
+        alert("Gagal membaca kwsp_table.json atau socso_table.json");
+    }
+}
+
+loadTables();
+
+
+// Cari potongan berdasarkan gaji
+function cariPotongan(gaji, table) {
+
+    for (const row of table) {
+
+        // format object
+        if (!Array.isArray(row)) {
+
+            if (gaji >= row.min && gaji <= row.max)
+                return row.potongan;
+
+        }
+
+        // format array
+        else {
+
+            if (gaji >= row[0] && gaji <= row[1])
+                return row[2];
+
+        }
+
+    }
+
+    return 0;
+}
+
         function kiraGaji() {
             const basic = dapatkanNilai('input-basic');
             const ot15_jam = dapatkanNilai('input-ot15');
@@ -434,21 +485,28 @@
             const hasilOtPh = (basicUtama / 26 / 8 * 3) * otPh_jam;
 
             const gajiKasar = basicUtama + hasilOt15 + hasilNormalPh + hasilOtPh + dobi;
+            const asasKWSP = basic + elaunShift + dobi;
 
-            let potonganKWSP = 0;
-            let potonganSocso = 0;
-            let potonganEis = 0;
+  let potonganKWSP = 0;
+let potonganSocso = 0;
+let potonganEis = 0;
 
-            if (gajiKasar > 0) {
-                potonganKWSP = gajiKasar * 0.11;
-                potonganEis = gajiKasar * 0.002;
-                if (potonganEis > 9.80) potonganEis = 9.80;
+if (gajiKasar > 0) {
 
-                if (gajiKasar <= 30) potonganSocso = 0.10;
-                else if (gajiKasar <= 4000) potonganSocso = gajiKasar * 0.005;
-                else potonganSocso = 19.75;
-            }
+potonganKWSP = cariPotongan(
+    asasKWSP,
+    kwspTable
+);
+    potonganSocso = cariPotongan(
+        gajiKasar,
+        socsoTable
+    );
 
+    potonganEis = gajiKasar * 0.002;
+
+    if (potonganEis > 9.80)
+        potonganEis = 9.80;
+}
             const jumlahPotongan = potonganKWSP + potonganSocso + potonganEis;
             const gajiBersih = gajiKasar - jumlahPotongan;
 
@@ -477,7 +535,7 @@
                 `• Syif: Pagi (${dapatkanNilai('input-syif-pagi')} Hari) | Malam (${dapatkanNilai('input-syif-malam')} Hari)\n` +
                 `• Elaun Dobi: RM ${dapatkanNilai('input-dobi').toFixed(2)}\n\n` +
                 `*BAHAGIAN 2: HASIL KIRAAN*\n` +
-                `• Basic Utama: RM ${nilaiGlobal.basicUtama.toFixed(2)}\n` +
+                `• Basic Rate: RM ${nilaiGlobal.basicUtama.toFixed(2)}\n` +
                 `• Hasil OT 1.5: ${document.getElementById('calc-ot15').innerText}\n` +
                 `• Hasil Normal PH: ${document.getElementById('calc-normal-ph').innerText}\n` +
                 `• Hasil OT PH: ${document.getElementById('calc-ot-ph').innerText}\n` +
