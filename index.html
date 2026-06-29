@@ -177,6 +177,7 @@
         .result-val {
             font-weight: 600;
             color: #fff;
+            text-align: right;
         }
 
         .highlight-box {
@@ -254,22 +255,21 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <h1>Kiraan Gaji PB Prasarana</h1>
         <a href="https://wa.me/60149236577" target="_blank" class="navbar-admin-link">
-            <span>by</span>
+            <span>Daripada</span>
+            <span>Nazmi_Mik</span>
+            <span>(klik sini untukwssp😎🤙🏻🔥)</span>
             <svg viewBox="0 0 448 512">
                 <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-            </svg>
-            <span>admin (klik untuk sembang)</span>
+            </svg>           
         </a>
     </nav>
 
     <div class="container">
         <div class="grid-layout">
             
-            <!-- BAHAGIAN 1: USER KEYIN -->
             <div class="card">
                 <h2>Bahagian 1: Kemasukan Data</h2>
                 
@@ -311,21 +311,20 @@
                 </div>
             </div>
 
-            <!-- BAHAGIAN 2: JADUAL KIRAAN -->
             <div class="card">
                 <h2>Bahagian 2: Hasil Kiraan</h2>
 
                 <div class="result-row">
                     <span>OT Normal 1.5:</span>
-                    <span class="result-val" id="calc-ot15">RM 0.00</span>
+                    <span class="result-val" id="calc-ot15">RM 0.00      x      0 jam      =      RM 0.00</span>
                 </div>
                 <div class="result-row">
                     <span>Normal PH:</span>
-                    <span class="result-val" id="calc-normal-ph">RM 0.00</span>
+                    <span class="result-val" id="calc-normal-ph">RM 0.00      x      0 hari      =      RM 0.00</span>
                 </div>
                 <div class="result-row">
                     <span>OT PH 3.0:</span>
-                    <span class="result-val" id="calc-ot-ph">RM 0.00</span>
+                    <span class="result-val" id="calc-ot-ph">RM 0.00      x      0 jam      =      RM 0.00</span>
                 </div>
                 <div class="result-row">
                     <span>Elaun Shift:</span>
@@ -333,7 +332,6 @@
                 </div>
             </div>
 
-            <!-- BAHAGIAN 3: TOTAL & POTONGAN -->
             <div class="card">
                 <h2>Bahagian 3: Rumusan Gaji</h2>
                 
@@ -344,7 +342,7 @@
                     </div>
                 </div>
 
-                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan Wajib</h3>
+                <h3 style="font-size: 1.1rem; margin-top: 20px; color: var(--danger);">Potongan</h3>
                 <div class="result-row">
                     <span>KWSP / EPF (11%):</span>
                     <span class="result-val" id="potongan-kwsp" style="color: var(--danger);">-RM 0.00</span>
@@ -367,12 +365,11 @@
 
                 <div class="highlight-box" style="background-color: rgba(16, 185, 129, 0.2); border-left-color: var(--success); margin-top: 20px;">
                     <div class="flex-total" style="font-size: 1.4rem; color: #fff;">
-                        <span>GAJI BERSIH :</span>
+                        <span>GAJI BERSIH (advance raya & loan belum tolak lagi😂🙏) :</span>
                         <span id="summary-gaji-bersih" style="color: var(--success);">RM 0.00</span>
                     </div>
                 </div>
 
-                <!-- Butang Hanya Salin Data (Tanpa Auto-Buka WhatsApp) -->
                 <button class="btn-copy" onclick="salinDataGaji()">
                     📋 Salin Data Laporan Gaji
                 </button>
@@ -381,7 +378,6 @@
         </div>
     </div>
 
-    <!-- --- JAVASCRIPT --- -->
     <script>
         const inputIds = [
             'input-basic', 'input-ot15', 'input-normal-ph', 
@@ -406,62 +402,39 @@
             return "RM " + nilai.toFixed(2);
         }
 
-        // Variabel global untuk memegang nilai terhitung yang akan disalin
-        let nilaiGlobal = {
-            basicUtama: 0,
-            elaunShift: 0
-        };
+        let kwspTable = [];
+        let socsoTable = [];
 
-        // =========================
-// MUATKAN JADUAL KWSP & SOCSO
-// =========================
-
-let kwspTable = [];
-let socsoTable = [];
-
-async function loadTables() {
-    try {
-        kwspTable = await fetch("kwsp_table.json").then(r => r.json());
-        socsoTable = await fetch("socso_table.json").then(r => r.json());
-
-        console.log("KWSP:", kwspTable.length);
-        console.log("SOCSO:", socsoTable.length);
-
-        kiraGaji();
-    } catch (e) {
-        console.error(e);
-        alert("Gagal membaca kwsp_table.json atau socso_table.json");
-    }
-}
-
-loadTables();
-
-
-// Cari potongan berdasarkan gaji
-function cariPotongan(gaji, table) {
-
-    for (const row of table) {
-
-        // format object
-        if (!Array.isArray(row)) {
-
-            if (gaji >= row.min && gaji <= row.max)
-                return row.potongan;
-
+        async function loadTables() {
+            try {
+                kwspTable = await fetch("kwsp_table.json").then(r => r.json());
+                socsoTable = await fetch("socso_table.json").then(r => r.json());
+                console.log("KWSP:", kwspTable.length);
+                console.log("SOCSO:", socsoTable.length);
+                kiraGaji();
+            } catch (e) {
+                console.error("Gagal memuatkan jadual JSON, menggunakan fallback.", e);
+                kiraGaji();
+            }
         }
 
-        // format array
-        else {
+        loadTables();
 
-            if (gaji >= row[0] && gaji <= row[1])
-                return row[2];
+        // Cari potongan berdasarkan gaji
+        function cariPotongan(gaji, table) {
+            if (!table || table.length === 0) return null;
 
+            for (const row of table) {
+                if (!Array.isArray(row)) {
+                    if (gaji >= row.min && gaji <= row.max)
+                        return row.potongan;
+                } else {
+                    if (gaji >= row[0] && gaji <= row[1])
+                        return row[2];
+                }
+            }
+            return 0;
         }
-
-    }
-
-    return 0;
-}
 
         function kiraGaji() {
             const basic = dapatkanNilai('input-basic');
@@ -472,75 +445,93 @@ function cariPotongan(gaji, table) {
             const syifMalam = dapatkanNilai('input-syif-malam');
             const dobi = dapatkanNilai('input-dobi');
 
-            // Pengiraan Latar Belakang (Formula Tetap Sama)
+            // Pengiraan Latar Belakang
             const elaunShift = (syifPagi * 15) + (syifMalam * 20);
             const basicUtama = basic + elaunShift;
 
-            // Simpan ke variabel global untuk keperluan teks salinan
-            nilaiGlobal.basicUtama = basicUtama;
-            nilaiGlobal.elaunShift = elaunShift;
+            // Kira Kadar (Rate) Asas
+            const rateOt15 = (basicUtama / 26 / 8 * 1.5);
+            const rateNormalPh = (basicUtama / 26 * 2);
+            const rateOtPh = (basicUtama / 26 / 8 * 3);
 
-            const hasilOt15 = (basicUtama / 26 / 8 * 1.5) * ot15_jam;
-            const hasilNormalPh = (basicUtama / 26 * 2) * normalPh_hari;
-            const hasilOtPh = (basicUtama / 26 / 8 * 3) * otPh_jam;
+            // Hasil Jumlah Akhir
+            const hasilOt15 = rateOt15 * ot15_jam;
+            const hasilNormalPh = rateNormalPh * normalPh_hari;
+            const hasilOtPh = rateOtPh * otPh_jam;
 
             const gajiKasar = basicUtama + hasilOt15 + hasilNormalPh + hasilOtPh + dobi;
             const asasKWSP = basic + elaunShift + dobi;
 
-  let potonganKWSP = 0;
-let potonganSocso = 0;
-let potonganEis = 0;
+            let potonganKWSP = 0;
+            let potonganSocso = 0;
+            let potonganEis = 0;
 
-if (gajiKasar > 0) {
+            if (gajiKasar > 0) {
+                let hasilKwsp = cariPotongan(asasKWSP, kwspTable);
+                let hasilSocso = cariPotongan(gajiKasar, socsoTable);
 
-potonganKWSP = cariPotongan(
-    asasKWSP,
-    kwspTable
-);
-    potonganSocso = cariPotongan(
-        gajiKasar,
-        socsoTable
-    );
+                potonganKWSP = (hasilKwsp !== null) ? hasilKwsp : (asasKWSP * 0.11);
+                potonganSocso = (hasilSocso !== null) ? hasilSocso : (gajiKasar * 0.005);
+                potonganEis = gajiKasar * 0.002;
 
-    potonganEis = gajiKasar * 0.002;
+                if (potonganEis > 9.80) potonganEis = 9.80;
+            }
 
-    if (potonganEis > 9.80)
-        potonganEis = 9.80;
-}
             const jumlahPotongan = potonganKWSP + potonganSocso + potonganEis;
             const gajiBersih = gajiKasar - jumlahPotongan;
 
-            // Kemaskini UI (Paparan "Basic Utama" telah dibuang daripada senarai ini)
-            document.getElementById('calc-ot15').innerText = formatMataWang(hasilOt15);
-            document.getElementById('calc-normal-ph').innerText = formatMataWang(hasilNormalPh);
-            document.getElementById('calc-ot-ph').innerText = formatMataWang(hasilOtPh);
-            document.getElementById('calc-elaun-shift').innerText = formatMataWang(elaunShift);
+            // KEMASKINI PAPARAN UI SKRIN (Dengan jarak luas bagi 'x' dan '=')
+            if(document.getElementById('calc-ot15')) {
+                document.getElementById('calc-ot15').innerText = `${formatMataWang(rateOt15)}      x      ${ot15_jam} jam      =      ${formatMataWang(hasilOt15)}`;
+            }
+            if(document.getElementById('calc-normal-ph')) {
+                document.getElementById('calc-normal-ph').innerText = `${formatMataWang(rateNormalPh)}      x      ${normalPh_hari} hari      =      ${formatMataWang(hasilNormalPh)}`;
+            }
+            if(document.getElementById('calc-ot-ph')) {
+                document.getElementById('calc-ot-ph').innerText = `${formatMataWang(rateOtPh)}      x      ${otPh_jam} jam      =      ${formatMataWang(hasilOtPh)}`;
+            }
+            if(document.getElementById('calc-elaun-shift')) {
+                document.getElementById('calc-elaun-shift').innerText = formatMataWang(elaunShift);
+            }
             
-            document.getElementById('summary-gaji-kasar').innerText = formatMataWang(gajiKasar);
-            document.getElementById('potongan-kwsp').innerText = "- " + formatMataWang(potonganKWSP);
-            document.getElementById('potongan-socso').innerText = "- " + formatMataWang(potonganSocso);
-            document.getElementById('potongan-eis').innerText = "- " + formatMataWang(potonganEis);
-            document.getElementById('summary-potongan').innerText = formatMataWang(jumlahPotongan);
-            document.getElementById('summary-gaji-bersih').innerText = formatMataWang(gajiBersih);
+            // Rumusan
+            if(document.getElementById('summary-gaji-kasar')) document.getElementById('summary-gaji-kasar').innerText = formatMataWang(gajiKasar);
+            if(document.getElementById('potongan-kwsp')) document.getElementById('potongan-kwsp').innerText = "- " + formatMataWang(potonganKWSP);
+            if(document.getElementById('potongan-socso')) document.getElementById('potongan-socso').innerText = "- " + formatMataWang(potonganSocso);
+            if(document.getElementById('potongan-eis')) document.getElementById('potongan-eis').innerText = "- " + formatMataWang(potonganEis);
+            if(document.getElementById('summary-potongan')) document.getElementById('summary-potongan').innerText = formatMataWang(jumlahPotongan);
+            if(document.getElementById('summary-gaji-bersih')) document.getElementById('summary-gaji-bersih').innerText = formatMataWang(gajiBersih);
         }
 
-        // Fungsi Hanya Menyalin Data ke Clipboard (Tanpa Buka WhatsApp)
+        // Fungsi Menyalin Data ke Clipboard
         function salinDataGaji() {
+            const basic = dapatkanNilai('input-basic');
+            const ot15_jam = dapatkanNilai('input-ot15');
+            const normalPh_hari = dapatkanNilai('input-normal-ph');
+            const otPh_jam = dapatkanNilai('input-ot-ph');
+            const syifPagi = dapatkanNilai('input-syif-pagi');
+            const syifMalam = dapatkanNilai('input-syif-malam');
+            const dobi = dapatkanNilai('input-dobi');
+
+            const elaunShiftKira = (syifPagi * 15) + (syifMalam * 20);
+            const basicUtamaKira = basic + elaunShiftKira;
+
+            const txtOt15 = document.getElementById('calc-ot15') ? document.getElementById('calc-ot15').innerText : "";
+            const txtNormalPh = document.getElementById('calc-normal-ph') ? document.getElementById('calc-normal-ph').innerText : "";
+            const txtOtPh = document.getElementById('calc-ot-ph') ? document.getElementById('calc-ot-ph').innerText : "";
+            const elaunShiftText = document.getElementById('calc-elaun-shift') ? document.getElementById('calc-elaun-shift').innerText : "RM 0.00";
+
             const teksMesej = `*KIRAAN GAJI PB PRASARANA*\n` +
                 `==============================\n` +
-                `*BAHAGIAN 1: INPUT DATA*\n` +
-                `• Basic Asal: RM ${dapatkanNilai('input-basic').toFixed(2)}\n` +
-                `• OT 1.5: ${dapatkanNilai('input-ot15')} Jam\n` +
-                `• Normal PH: ${dapatkanNilai('input-normal-ph')} Hari | OT PH 3.0: ${dapatkanNilai('input-ot-ph')} Jam\n` +
-                `• Syif: Pagi (${dapatkanNilai('input-syif-pagi')} Hari) | Malam (${dapatkanNilai('input-syif-malam')} Hari)\n` +
-                `• Elaun Dobi: RM ${dapatkanNilai('input-dobi').toFixed(2)}\n\n` +
-                `*BAHAGIAN 2: HASIL KIRAAN*\n` +
-                `• Basic Rate: RM ${nilaiGlobal.basicUtama.toFixed(2)}\n` +
-                `• Hasil OT 1.5: ${document.getElementById('calc-ot15').innerText}\n` +
-                `• Hasil Normal PH: ${document.getElementById('calc-normal-ph').innerText}\n` +
-                `• Hasil OT PH: ${document.getElementById('calc-ot-ph').innerText}\n` +
-                `• Jumlah Elaun Syif: ${document.getElementById('calc-elaun-shift').innerText}\n\n` +
-                `*BAHAGIAN 3: RUMUSAN*\n` +
+                `*Rincian Pengiraan Gaji:*\n` +
+                `• Basic Asal: RM ${basic.toFixed(2)}\n` +
+                `• Basic Rate (Basic + Syif) - RM ${basicUtamaKira.toFixed(2)}\n` +
+                `• OT Normal 1.5 - ${txtOt15}\n` +
+                `• Normal PH - ${txtNormalPh}\n` +
+                `• OT PH 3.0 - ${txtOtPh}\n` +
+                `• Elaun Syif - Pagi (${syifPagi} Hari) | Malam (${syifMalam} Hari) = ${elaunShiftText}\n` +
+                `• Elaun Dobi - RM ${dobi.toFixed(2)}\n\n` +
+                `*RUMUSAN KESELURUHAN*\n` +
                 `• 💰 *GAJI KASAR:* ${document.getElementById('summary-gaji-kasar').innerText}\n` +
                 `• ❌ Jumlah Potongan: ${document.getElementById('summary-potongan').innerText}\n` +
                 `• 💵 *GAJI BERSIH:* ${document.getElementById('summary-gaji-bersih').innerText}\n` +
